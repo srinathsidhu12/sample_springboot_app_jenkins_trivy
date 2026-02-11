@@ -4,6 +4,9 @@ pipeline {
         DOCKER_HUB_REPO = "srinathsidhu12/spring_boot_app_trivy"
         IMAGE_TAG = "${BUILD_NUMBER}"
     }
+    tools {
+       maven 'Maven'
+    }
     stages{
         stage('clone code'){
             steps{
