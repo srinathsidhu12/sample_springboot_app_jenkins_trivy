@@ -25,7 +25,7 @@ pipeline {
                 sh 'trivy image --severity HIGH --exit-code 1 $DOCKER_HUB_REPO:$IMAGE_TAG'
             }
         }
-        stage(){
+        stage('Push Image'){
             steps{
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_credentials', passwordVariable: 'password', usernameVariable: 'username')]) {
                  sh """
