@@ -17,7 +17,7 @@ pipeline {
             steps{
                 withSonarQubeEnv('sonarserver') {
                    sh '''
-                   mvn clean verify sonar:sonar' \
+                   mvn clean verify sonar:sonar \
                    -Dsonar.projectKey=Jenkins-sample-springboot-app-pipeline \
                    -Dsonar.projectName="Jenkins-sample-springboot-app-pipeline"
                    '''
