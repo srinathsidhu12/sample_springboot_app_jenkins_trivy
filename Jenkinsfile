@@ -13,6 +13,20 @@ pipeline {
                 git 'https://github.com/srinathsidhu12/sample_springboot_app_jenkins_trivy.git'
             }
         }
+        stage('sonar_analysis'){
+            steps{
+                withSonarQubeEnv(credentialsId: 'sonarqube_token') {
+                   sh 'mvn sonar:sonar'
+               }
+            }
+        }
+        stage('Quality Gate'){
+            steps{
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true, credentialsId: 'sonarqube_token'
+                }       
+            }
+        }
         stage('Application_build'){
             steps{
                 sh 'mvn clean package'
