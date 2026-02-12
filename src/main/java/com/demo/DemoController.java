@@ -8,8 +8,8 @@ public class DemoController {
 
     @GetMapping("/test")
     public String test() {
-        String s = null;
-        return s.toString();  // NullPointerException risk
+        String s = "Hello DevSecOps";
+        return s; 
     }
 }
 
