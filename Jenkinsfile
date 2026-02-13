@@ -3,6 +3,7 @@ pipeline {
     environment {
         DOCKER_HUB_REPO = "srinathsidhu12/spring_boot_app_trivy"
         IMAGE_TAG = "${BUILD_NUMBER}"
+        K8S_DEPLOYMENT_NAME = "springboot-app" 
     }
     tools {
        maven 'Maven'
