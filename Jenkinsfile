@@ -61,7 +61,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
                     sh """
-                     sed -i "s|image:.*|image: ${DOCKER_HUB_REPO}:${IMAGE_TAG}|" ./k8s/k8s-deployment.yaml
+                     sed -i "s|image:.*|image: ${DOCKER_HUB_REPO}:${IMAGE_TAG}|" ./k8s/deployment.yaml
                      kubectl apply -f ./k8s/deployment.yaml
                      kubectl apply -f ./k8s/service.yaml
                      kubectl rollout status deployment/${DEPLOYMENT_NAME}
