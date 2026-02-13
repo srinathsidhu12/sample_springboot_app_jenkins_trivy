@@ -51,10 +51,23 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_credentials', passwordVariable: 'password', usernameVariable: 'username')]) {
                  sh """
                  echo "$password" | docker login -u "$username" --password-stdin
-                 docker push $DOCKER_HUB_REPO:$Image_tag
+                 docker push $DOCKER_HUB_REPO:$IMAGE_TAG
                  """
              }
           }
         }
+        stage('Update k8s manifests and deploy to EKS') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                     sed -i "s|image:.*|image: ${DOCKER_HUB_REPO}:${IMAGE_TAG}|" ./k8s/k8s-deployment.yaml
+                     kubectl apply -f ./k8s/k8s-deployment.yaml
+                     kubectl apply -f ./k8s/k8s-service.yaml
+                     kubectl rollout status deployment/${K8S_DEPLOYMENT_NAME}
+                    """
+                  }
+             }
+         }
+         
     }
 }
