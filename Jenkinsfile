@@ -3,7 +3,7 @@ pipeline {
     environment {
         DOCKER_HUB_REPO = "srinathsidhu12/spring_boot_app_trivy"
         IMAGE_TAG = "${BUILD_NUMBER}"
-        K8S_DEPLOYMENT_NAME = "springboot-app" 
+        DEPLOYMENT_NAME = "springboot-app" 
     }
     tools {
        maven 'Maven'
@@ -62,9 +62,9 @@ pipeline {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
                     sh """
                      sed -i "s|image:.*|image: ${DOCKER_HUB_REPO}:${IMAGE_TAG}|" ./k8s/k8s-deployment.yaml
-                     kubectl apply -f ./k8s/k8s-deployment.yaml
-                     kubectl apply -f ./k8s/k8s-service.yaml
-                     kubectl rollout status deployment/${K8S_DEPLOYMENT_NAME}
+                     kubectl apply -f ./k8s/deployment.yaml
+                     kubectl apply -f ./k8s/service.yaml
+                     kubectl rollout status deployment/${DEPLOYMENT_NAME}
                     """
                   }
              }
